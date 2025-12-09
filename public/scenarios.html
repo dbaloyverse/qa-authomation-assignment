@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Board - Test Scenarios</title>
+  <style>
+    :root {
+      --color-primary: #3b82f6;
+      --color-success: #10b981;
+      --color-warning: #f59e0b;
+      --color-danger: #ef4444;
+      --color-gray-50: #f9fafb;
+      --color-gray-100: #f3f4f6;
+      --color-gray-200: #e5e7eb;
+      --color-gray-700: #374151;
+      --color-gray-800: #1f2937;
+      --color-gray-900: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: var(--color-gray-800);
+      background: var(--color-gray-50);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--color-primary), #8b5cf6);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .nav {
+      background: white;
+      padding: 15px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--color-primary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .nav a:hover {
+      background: var(--color-gray-100);
+    }
+
+    .nav .app-link {
+      background: var(--color-primary);
+      color: white;
+      margin-left: auto;
+    }
+
+    .nav .app-link:hover {
+      background: #2563eb;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .intro {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .intro h2 {
+      color: var(--color-gray-900);
+      margin-bottom: 15px;
+    }
+
+    .intro p {
+      color: var(--color-gray-700);
+      margin-bottom: 10px;
+    }
+
+    .intro ul {
+      margin-left: 20px;
+      color: var(--color-gray-700);
+    }
+
+    .intro li {
+      margin-bottom: 5px;
+    }
+
+    .scenario {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .scenario-header {
+      background: var(--color-gray-800);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scenario-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .difficulty {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .difficulty.easy {
+      background: var(--color-success);
+    }
+
+    .difficulty.medium {
+      background: var(--color-warning);
+      color: var(--color-gray-900);
+    }
+
+    .difficulty.hard {
+      background: var(--color-danger);
+    }
+
+    .scenario-body {
+      padding: 0;
+    }
+
+    .gherkin {
+      background: var(--color-gray-900);
+      color: #e5e7eb;
+      padding: 20px 24px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.9;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    .gherkin .keyword {
+      color: #f472b6;
+      font-weight: bold;
+    }
+
+    .gherkin .string {
+      color: #34d399;
+    }
+
+    .gherkin .comment {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .gherkin .tag {
+      color: #60a5fa;
+    }
+
+    .footer {
+      background: var(--color-gray-800);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .footer a {
+      color: var(--color-primary);
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .nav-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav .app-link {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      .gherkin {
+        font-size: 13px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Task Board - Test Scenarios</h1>
+    <p>QA Automation Live Coding Assessment</p>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-content">
+      <a href="#instructions">Instructions</a>
+      <a href="#scenarios">Scenarios</a>
+      <a href="./" class="app-link">Open Task Board App</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="instructions" class="intro">
+      <h2>Assessment Instructions</h2>
+      <p>
+        Implement automated tests for the Task Board application using your preferred test framework
+        (Selenium, Cypress, Playwright, etc.).
+      </p>
+      <p>Your solution should demonstrate:</p>
+      <ul>
+        <li>Page Object Model or similar design pattern</li>
+        <li>Proper wait strategies and synchronization</li>
+        <li>Clean, maintainable test code</li>
+        <li>Handling of dynamic elements and overlays</li>
+        <li>Appropriate assertions and verifications</li>
+      </ul>
+      <p style="margin-top: 15px;">
+        <strong>Time:</strong> Choose 3-5 scenarios to implement based on your available time.
+      </p>
+    </section>
+
+    <section id="scenarios">
+      <!-- Scenario 1 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 1: Create a New Task</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@smoke @create-task</span>
+<span class="keyword">Feature:</span> Task Creation
+
+  <span class="keyword">Scenario:</span> Successfully create a new task with all fields
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I enter <span class="string">"Implement login feature"</span> in the title field
+    <span class="keyword">And</span> I enter <span class="string">"Add OAuth2 authentication flow"</span> in the description field
+    <span class="keyword">And</span> I select <span class="string">"High"</span> priority
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> a success toast should appear with message <span class="string">"Task created successfully"</span>
+    <span class="keyword">And</span> the task <span class="string">"Implement login feature"</span> should appear in the To Do column
+    <span class="keyword">And</span> the task should display <span class="string">"High"</span> priority badge
+
+  <span class="keyword">Scenario:</span> Create task with only required fields
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I enter <span class="string">"Quick task"</span> in the title field
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> the task <span class="string">"Quick task"</span> should appear in the To Do column</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 2 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 2: Form Validation</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@validation</span>
+<span class="keyword">Feature:</span> Form Validation
+
+  <span class="keyword">Scenario:</span> Validation error when submitting empty title
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I click the Add Task button without entering a title
+    <span class="keyword">Then</span> the title input should display an error state
+    <span class="keyword">And</span> the error message <span class="string">"Title is required"</span> should be visible
+    <span class="keyword">And</span> no new task should be created
+
+  <span class="keyword">Scenario:</span> Error state clears after entering valid title
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> I have triggered the title validation error
+    <span class="keyword">When</span> I enter <span class="string">"Valid task title"</span> in the title field
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> the title input should not display an error state
+    <span class="keyword">And</span> the task should be created successfully</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 3 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 3: Delete a Task</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@delete-task</span>
+<span class="keyword">Feature:</span> Task Deletion
+
+  <span class="keyword">Scenario:</span> Delete a task from the board
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> a task <span class="string">"Create API endpoints"</span> exists in the To Do column
+    <span class="keyword">When</span> I click the menu button on task <span class="string">"Create API endpoints"</span>
+    <span class="keyword">And</span> I click the Delete button
+    <span class="keyword">Then</span> a success toast should appear with message <span class="string">"Task deleted successfully"</span>
+    <span class="keyword">And</span> the task <span class="string">"Create API endpoints"</span> should not exist on the board</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 4 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 4: Move Task Through Columns</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@move-task @workflow</span>
+<span class="keyword">Feature:</span> Task Movement
+
+  <span class="keyword">Scenario:</span> Move task from To Do to In Progress
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> a task <span class="string">"Create API endpoints"</span> exists in the To Do column
+    <span class="keyword">When</span> I click the menu button on task <span class="string">"Create API endpoints"</span>
+    <span class="keyword">And</span> I click <span class="string">"Move Forward"</span>
+    <span class="keyword">Then</span> a success toast should appear with message <span class="string">"Task moved successfully"</span>
+    <span class="keyword">And</span> the task should appear in the In Progress column
+    <span class="keyword">And</span> the task should NOT exist in the To Do column
+
+  <span class="keyword">Scenario:</span> Move task through all columns to Done
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> a task exists in the To Do column
+    <span class="keyword">When</span> I move the task forward twice
+    <span class="keyword">Then</span> the task should appear in the Done column
+
+  <span class="keyword">Scenario:</span> Move Forward not available for Done tasks
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> a task exists in the Done column
+    <span class="keyword">When</span> I click the menu button on that task
+    <span class="keyword">Then</span> the <span class="string">"Move Forward"</span> button should NOT be visible
+    <span class="keyword">And</span> only the Delete button should be available</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 5 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 5: Search and Navigate to Task</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@search</span>
+<span class="keyword">Feature:</span> Task Search
+
+  <span class="keyword">Scenario:</span> Search for task by title
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> multiple tasks exist on the board
+    <span class="keyword">When</span> I type <span class="string">"authentication"</span> in the search field
+    <span class="keyword">Then</span> the search results dropdown should appear
+    <span class="keyword">And</span> the results should contain <span class="string">"Implement user authentication"</span>
+
+  <span class="keyword">Scenario:</span> Navigate to task from search results
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I type <span class="string">"database"</span> in the search field
+    <span class="keyword">And</span> I click on the result <span class="string">"Design database schema"</span>
+    <span class="keyword">Then</span> the page should scroll to the task
+    <span class="keyword">And</span> the task should be visually highlighted
+    <span class="keyword">And</span> the search input should be cleared
+
+  <span class="keyword">Scenario:</span> No results for non-matching search
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I type <span class="string">"xyznonexistent"</span> in the search field
+    <span class="keyword">Then</span> no search results dropdown should appear</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 6 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 6: Cookie Consent Banner</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@cookie-banner</span>
+<span class="keyword">Feature:</span> Cookie Consent Banner
+
+  <span class="keyword">Scenario:</span> Cookie banner appears on first visit
+    <span class="keyword">Given</span> I have cleared browser cookies for the application
+    <span class="keyword">When</span> I navigate to the Task Board page
+    <span class="keyword">Then</span> the cookie consent banner should appear
+    <span class="keyword">And</span> the banner should contain Accept and Decline buttons
+
+  <span class="keyword">Scenario:</span> Accepting cookies dismisses banner
+    <span class="keyword">Given</span> the cookie consent banner is visible
+    <span class="keyword">When</span> I click the Accept button
+    <span class="keyword">Then</span> the cookie banner should disappear
+    <span class="keyword">And</span> the banner should not reappear on page refresh
+
+  <span class="keyword">Scenario:</span> Declining cookies dismisses banner
+    <span class="keyword">Given</span> the cookie consent banner is visible
+    <span class="keyword">When</span> I click the Decline button
+    <span class="keyword">Then</span> the cookie banner should disappear</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 7 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 7: Complete Task Workflow</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@e2e @workflow</span>
+<span class="keyword">Feature:</span> Complete Task Lifecycle
+
+  <span class="keyword">Scenario:</span> Create and move task through all columns then delete
+    <span class="keyword">Given</span> the Task Board page is loaded
+
+    <span class="comment"># Create new task</span>
+    <span class="keyword">When</span> I create a new task with title <span class="string">"E2E Test Task"</span> and priority <span class="string">"High"</span>
+    <span class="keyword">Then</span> the task should appear in the To Do column
+
+    <span class="comment"># Move to In Progress</span>
+    <span class="keyword">When</span> I move task <span class="string">"E2E Test Task"</span> forward
+    <span class="keyword">Then</span> the task should be in the In Progress column
+
+    <span class="comment"># Move to Done</span>
+    <span class="keyword">When</span> I move task <span class="string">"E2E Test Task"</span> forward
+    <span class="keyword">Then</span> the task should be in the Done column
+
+    <span class="comment"># Search and verify</span>
+    <span class="keyword">When</span> I search for <span class="string">"E2E Test"</span>
+    <span class="keyword">Then</span> the task should appear in search results
+
+    <span class="comment"># Delete</span>
+    <span class="keyword">When</span> I delete the task <span class="string">"E2E Test Task"</span>
+    <span class="keyword">Then</span> the task should no longer exist on the board
+    <span class="keyword">And</span> searching for <span class="string">"E2E Test"</span> should return no results</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 8 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 8: Verify Loading States</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@loading</span>
+<span class="keyword">Feature:</span> Loading State Verification
+
+  <span class="keyword">Scenario:</span> Loading overlay appears during task creation
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I submit a new task
+    <span class="keyword">Then</span> a loading overlay should appear
+    <span class="keyword">And</span> I should not be able to interact with other elements
+    <span class="keyword">When</span> the loading completes
+    <span class="keyword">Then</span> the overlay should disappear
+    <span class="keyword">And</span> the task should be created
+
+  <span class="keyword">Scenario:</span> Loading overlay appears during task movement
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> a task exists in the To Do column
+    <span class="keyword">When</span> I move the task forward
+    <span class="keyword">Then</span> a loading overlay should appear briefly
+    <span class="keyword">And</span> after loading completes the task should be in the new column</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 9 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 9: Toast Notification Verification</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@toast</span>
+<span class="keyword">Feature:</span> Toast Notifications
+
+  <span class="keyword">Scenario:</span> Verify toast appears with correct message
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">When</span> I create a new task
+    <span class="keyword">Then</span> a success toast should appear
+    <span class="keyword">And</span> the toast should contain message <span class="string">"Task created successfully"</span>
+    <span class="keyword">And</span> the toast should have a close button
+
+  <span class="keyword">Scenario:</span> Toast auto-dismisses
+    <span class="keyword">Given</span> a toast notification is visible
+    <span class="keyword">When</span> I wait without interacting
+    <span class="keyword">Then</span> the toast should automatically disappear
+
+  <span class="keyword">Scenario:</span> Manually dismiss toast
+    <span class="keyword">Given</span> a toast notification is visible
+    <span class="keyword">When</span> I click the close button on the toast
+    <span class="keyword">Then</span> the toast should immediately disappear</pre>
+        </div>
+      </article>
+
+      <!-- Scenario 10 -->
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 10: Column Task Count Verification</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <pre class="gherkin"><span class="tag">@counts @verification</span>
+<span class="keyword">Feature:</span> Column Count Verification
+
+  <span class="keyword">Scenario:</span> Task counts update when creating tasks
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> I note the current To Do column count
+    <span class="keyword">When</span> I create a new task
+    <span class="keyword">Then</span> the To Do column count should increase by 1
+
+  <span class="keyword">Scenario:</span> Task counts update when moving tasks
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> I note the counts for To Do and In Progress columns
+    <span class="keyword">When</span> I move a task from To Do to In Progress
+    <span class="keyword">Then</span> the To Do count should decrease by 1
+    <span class="keyword">And</span> the In Progress count should increase by 1
+
+  <span class="keyword">Scenario:</span> Task counts update when deleting tasks
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> I note the current Done column count
+    <span class="keyword">When</span> I delete a task from the Done column
+    <span class="keyword">Then</span> the Done column count should decrease by 1</pre>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Task Board - QA Automation Assessment</p>
+    <p style="margin-top: 10px; opacity: 0.7;">
+      <a href="./">Open Task Board App</a> |
+      <a href="https://github.com/dbaloyverse/qa-authomation-assignment">GitHub Repository</a>
+    </p>
+  </footer>
+</body>
+</html>
