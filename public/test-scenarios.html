@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Board - QA Automation Test Scenarios</title>
+  <style>
+    :root {
+      --color-primary: #3b82f6;
+      --color-success: #10b981;
+      --color-warning: #f59e0b;
+      --color-danger: #ef4444;
+      --color-gray-50: #f9fafb;
+      --color-gray-100: #f3f4f6;
+      --color-gray-200: #e5e7eb;
+      --color-gray-700: #374151;
+      --color-gray-800: #1f2937;
+      --color-gray-900: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: var(--color-gray-800);
+      background: var(--color-gray-50);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--color-primary), #8b5cf6);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .nav {
+      background: white;
+      padding: 15px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--color-primary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .nav a:hover {
+      background: var(--color-gray-100);
+    }
+
+    .nav .app-link {
+      background: var(--color-primary);
+      color: white;
+      margin-left: auto;
+    }
+
+    .nav .app-link:hover {
+      background: #2563eb;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .intro {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .intro h2 {
+      color: var(--color-gray-900);
+      margin-bottom: 15px;
+    }
+
+    .intro p {
+      color: var(--color-gray-700);
+      margin-bottom: 15px;
+    }
+
+    .challenges {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .challenge {
+      background: var(--color-gray-100);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--color-warning);
+    }
+
+    .challenge h4 {
+      font-size: 14px;
+      color: var(--color-gray-800);
+      margin-bottom: 5px;
+    }
+
+    .challenge p {
+      font-size: 13px;
+      color: var(--color-gray-700);
+      margin: 0;
+    }
+
+    .scenario-section {
+      margin-bottom: 40px;
+    }
+
+    .scenario-section h2 {
+      color: var(--color-gray-900);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--color-gray-200);
+    }
+
+    .scenario {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .scenario-header {
+      background: var(--color-gray-800);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scenario-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .difficulty {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .difficulty.easy {
+      background: var(--color-success);
+    }
+
+    .difficulty.medium {
+      background: var(--color-warning);
+      color: var(--color-gray-900);
+    }
+
+    .difficulty.hard {
+      background: var(--color-danger);
+    }
+
+    .scenario-body {
+      padding: 20px;
+    }
+
+    .gherkin {
+      background: var(--color-gray-900);
+      color: #e5e7eb;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .gherkin .keyword {
+      color: #f472b6;
+      font-weight: bold;
+    }
+
+    .gherkin .string {
+      color: #34d399;
+    }
+
+    .gherkin .comment {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .gherkin .tag {
+      color: #60a5fa;
+    }
+
+    .automation-hints {
+      margin-top: 15px;
+      padding: 15px;
+      background: #fef3c7;
+      border-radius: 8px;
+      border-left: 4px solid var(--color-warning);
+    }
+
+    .automation-hints h4 {
+      color: #92400e;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .automation-hints ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #78350f;
+      font-size: 13px;
+    }
+
+    .automation-hints li {
+      margin-bottom: 5px;
+    }
+
+    .locators {
+      margin-top: 15px;
+      padding: 15px;
+      background: var(--color-gray-100);
+      border-radius: 8px;
+    }
+
+    .locators h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: var(--color-gray-800);
+    }
+
+    .locator-table {
+      width: 100%;
+      font-size: 13px;
+      border-collapse: collapse;
+    }
+
+    .locator-table th,
+    .locator-table td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .locator-table th {
+      background: var(--color-gray-200);
+      font-weight: 600;
+    }
+
+    .locator-table code {
+      background: var(--color-gray-800);
+      color: #34d399;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .footer {
+      background: var(--color-gray-800);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .footer a {
+      color: var(--color-primary);
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .nav-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav .app-link {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Task Board - Test Scenarios</h1>
+    <p>Gherkin-based test cases for QA Automation Live Coding Assessment</p>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-content">
+      <a href="#overview">Overview</a>
+      <a href="#basic">Basic Scenarios</a>
+      <a href="#intermediate">Intermediate</a>
+      <a href="#advanced">Advanced</a>
+      <a href="#locators">Locators Reference</a>
+      <a href="./" class="app-link">Open Task Board App</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="overview" class="intro">
+      <h2>Assessment Overview</h2>
+      <p>
+        This page contains Gherkin test scenarios for the Task Board application. Candidates should implement
+        automated tests using their preferred framework (Selenium, Cypress, Playwright, etc.) to cover these scenarios.
+      </p>
+      <p>
+        The application is intentionally designed with common automation challenges. Candidates must identify
+        and handle these challenges appropriately.
+      </p>
+
+      <h3 style="margin-top: 25px; margin-bottom: 15px;">Automation Challenges to Handle</h3>
+      <div class="challenges">
+        <div class="challenge">
+          <h4>Cookie Consent Banner</h4>
+          <p>Appears after 500ms delay, blocks bottom elements (z-index: 9999)</p>
+        </div>
+        <div class="challenge">
+          <h4>Loading Overlay</h4>
+          <p>Random delays (300-2000ms), blocks all interactions</p>
+        </div>
+        <div class="challenge">
+          <h4>Dynamic Menu</h4>
+          <p>Uses @if directive - completely removed from DOM when closed</p>
+        </div>
+        <div class="challenge">
+          <h4>Toast Notifications</h4>
+          <p>Auto-dismiss after 3 seconds, must verify before disappearing</p>
+        </div>
+        <div class="challenge">
+          <h4>Fixed Header</h4>
+          <p>60px height, may cause ElementClickInterceptedException</p>
+        </div>
+        <div class="challenge">
+          <h4>Debounced Search</h4>
+          <p>300ms debounce + 200-400ms API delay before results appear</p>
+        </div>
+        <div class="challenge">
+          <h4>Stale Elements</h4>
+          <p>Task IDs regenerate on move, causing stale element references</p>
+        </div>
+        <div class="challenge">
+          <h4>Button State Changes</h4>
+          <p>Submit button disabled during form submission</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BASIC SCENARIOS -->
+    <section id="basic" class="scenario-section">
+      <h2>Basic Scenarios</h2>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 1: Create a New Task</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@smoke @create-task</span>
+<span class="keyword">Feature:</span> Task Creation
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+
+  <span class="keyword">Scenario:</span> Successfully create a new task with all fields
+    <span class="keyword">When</span> I enter <span class="string">"Implement login feature"</span> in the title field
+    <span class="keyword">And</span> I enter <span class="string">"Add OAuth2 authentication flow"</span> in the description field
+    <span class="keyword">And</span> I select <span class="string">"High"</span> priority
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> a success toast should appear with message <span class="string">"Task created successfully"</span>
+    <span class="keyword">And</span> the task <span class="string">"Implement login feature"</span> should appear in the To Do column
+    <span class="keyword">And</span> the task should display <span class="string">"High"</span> priority badge
+
+  <span class="keyword">Scenario:</span> Create task with only required fields
+    <span class="keyword">When</span> I enter <span class="string">"Quick task"</span> in the title field
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> a success toast should appear with message <span class="string">"Task created successfully"</span>
+    <span class="keyword">And</span> the task <span class="string">"Quick task"</span> should appear in the To Do column
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Cookie banner must be dismissed before interacting with form</li>
+              <li>Loading overlay appears during task creation (800-1200ms)</li>
+              <li>Submit button changes to "Saving..." and becomes disabled during submission</li>
+              <li>Toast notification auto-dismisses after 3 seconds - capture message quickly</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 2: Form Validation</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@validation @negative-test</span>
+<span class="keyword">Feature:</span> Form Validation
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+
+  <span class="keyword">Scenario:</span> Validation error when submitting empty title
+    <span class="keyword">When</span> I click the Add Task button without entering a title
+    <span class="keyword">Then</span> the title input should display an error state
+    <span class="keyword">And</span> the error message <span class="string">"Title is required"</span> should be visible
+    <span class="keyword">And</span> no new task should be created
+
+  <span class="keyword">Scenario:</span> Error state clears after entering valid title
+    <span class="keyword">Given</span> I have triggered the title validation error
+    <span class="keyword">When</span> I enter <span class="string">"Valid task title"</span> in the title field
+    <span class="keyword">And</span> I click the Add Task button
+    <span class="keyword">Then</span> the title input should not display an error state
+    <span class="keyword">And</span> the task should be created successfully
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Verify CSS class "error" is added/removed dynamically</li>
+              <li>Error message element appears/disappears with @if directive</li>
+              <li>Negative test - must verify task was NOT created</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 3: Delete a Task</h3>
+          <span class="difficulty easy">Easy</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@delete-task</span>
+<span class="keyword">Feature:</span> Task Deletion
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+    <span class="keyword">And</span> the initial tasks have loaded
+
+  <span class="keyword">Scenario:</span> Delete a task from To Do column
+    <span class="keyword">Given</span> a task <span class="string">"Create API endpoints"</span> exists in the To Do column
+    <span class="keyword">When</span> I click the menu button on task <span class="string">"Create API endpoints"</span>
+    <span class="keyword">And</span> I click the Delete button
+    <span class="keyword">Then</span> the loading overlay should appear
+    <span class="keyword">And</span> a success toast should appear with message <span class="string">"Task deleted successfully"</span>
+    <span class="keyword">And</span> the task <span class="string">"Create API endpoints"</span> should not exist on the board
+
+  <span class="keyword">Scenario:</span> Delete a task from Done column
+    <span class="keyword">Given</span> a task <span class="string">"Setup project repository"</span> exists in the Done column
+    <span class="keyword">When</span> I delete the task <span class="string">"Setup project repository"</span>
+    <span class="keyword">Then</span> the task should be removed from the board
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Menu appears only after clicking the menu button (⋮)</li>
+              <li>Menu uses @if - Delete button is not in DOM until menu is open</li>
+              <li>Must wait for menu to appear before clicking Delete</li>
+              <li>Loading overlay blocks during deletion (300-500ms)</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- INTERMEDIATE SCENARIOS -->
+    <section id="intermediate" class="scenario-section">
+      <h2>Intermediate Scenarios</h2>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 4: Move Task Through Columns</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@move-task @workflow</span>
+<span class="keyword">Feature:</span> Task Movement
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+
+  <span class="keyword">Scenario:</span> Move task from To Do to In Progress
+    <span class="keyword">Given</span> a task <span class="string">"Create API endpoints"</span> exists in the To Do column
+    <span class="keyword">When</span> I click the menu button on task <span class="string">"Create API endpoints"</span>
+    <span class="keyword">And</span> I click <span class="string">"Move Forward"</span>
+    <span class="keyword">Then</span> the loading overlay should appear briefly
+    <span class="keyword">And</span> a success toast should appear with message <span class="string">"Task moved successfully"</span>
+    <span class="keyword">And</span> the task should appear in the In Progress column
+    <span class="keyword">And</span> the task should NOT exist in the To Do column
+
+  <span class="keyword">Scenario:</span> Move task from In Progress to Done
+    <span class="keyword">Given</span> a task <span class="string">"Implement user authentication"</span> exists in the In Progress column
+    <span class="keyword">When</span> I move the task forward
+    <span class="keyword">Then</span> the task should appear in the Done column
+    <span class="keyword">And</span> the In Progress column count should decrease by 1
+    <span class="keyword">And</span> the Done column count should increase by 1
+
+  <span class="keyword">Scenario:</span> Move Forward button not available for Done tasks
+    <span class="keyword">Given</span> a task exists in the Done column
+    <span class="keyword">When</span> I click the menu button on that task
+    <span class="keyword">Then</span> the <span class="string">"Move Forward"</span> button should NOT be visible
+    <span class="keyword">And</span> only the Delete button should be available
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li><strong>Stale Element Reference:</strong> Task ID changes after move - must re-locate element</li>
+              <li>Menu closes after clicking action - re-open to interact again</li>
+              <li>Verify element is removed from source column (not just hidden)</li>
+              <li>Column count updates dynamically - verify count changes</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 5: Search and Navigate to Task</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@search @navigation</span>
+<span class="keyword">Feature:</span> Task Search
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+    <span class="keyword">And</span> multiple tasks exist on the board
+
+  <span class="keyword">Scenario:</span> Search for task by title
+    <span class="keyword">When</span> I type <span class="string">"authentication"</span> in the search field
+    <span class="keyword">Then</span> the search results dropdown should appear
+    <span class="keyword">And</span> the results should contain <span class="string">"Implement user authentication"</span>
+
+  <span class="keyword">Scenario:</span> Navigate to task from search results
+    <span class="keyword">When</span> I type <span class="string">"database"</span> in the search field
+    <span class="keyword">And</span> I wait for search results to appear
+    <span class="keyword">And</span> I click on the result <span class="string">"Design database schema"</span>
+    <span class="keyword">Then</span> the page should scroll to the task
+    <span class="keyword">And</span> the task should be visually highlighted
+    <span class="keyword">And</span> the search input should be cleared
+    <span class="keyword">And</span> the search results should close
+
+  <span class="keyword">Scenario:</span> No results for non-matching search
+    <span class="keyword">When</span> I type <span class="string">"xyznonexistent"</span> in the search field
+    <span class="keyword">And</span> I wait for the search to complete
+    <span class="keyword">Then</span> no search results dropdown should appear
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li><strong>Debounce delay:</strong> Results don't appear immediately - 300ms debounce + 200-400ms API delay</li>
+              <li>Search results dropdown uses @if - not in DOM until results exist</li>
+              <li>Must verify scroll position changed after clicking result</li>
+              <li>Highlight animation lasts ~2 seconds then fades</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 6: Cookie Consent Banner</h3>
+          <span class="difficulty medium">Medium</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@cookie-banner @overlay</span>
+<span class="keyword">Feature:</span> Cookie Consent Banner
+
+  <span class="keyword">Scenario:</span> Cookie banner appears on first visit
+    <span class="keyword">Given</span> I have cleared browser cookies for the application
+    <span class="keyword">When</span> I navigate to the Task Board page
+    <span class="keyword">Then</span> the page should load without the cookie banner initially
+    <span class="keyword">And</span> after 500 milliseconds the cookie banner should appear
+    <span class="keyword">And</span> the banner should contain Accept and Decline buttons
+
+  <span class="keyword">Scenario:</span> Accepting cookies dismisses banner
+    <span class="keyword">Given</span> the cookie consent banner is visible
+    <span class="keyword">When</span> I click the Accept button
+    <span class="keyword">Then</span> the cookie banner should disappear
+    <span class="keyword">And</span> the banner should not reappear on page refresh
+
+  <span class="keyword">Scenario:</span> Cookie banner blocks bottom elements
+    <span class="keyword">Given</span> the cookie consent banner is visible
+    <span class="keyword">And</span> a task card is positioned near the bottom of the viewport
+    <span class="keyword">When</span> I try to click on that task card
+    <span class="keyword">Then</span> the click may be intercepted by the cookie banner
+    <span class="comment"># Candidate should handle this by dismissing banner first</span>
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Banner appears with 500ms delay - not immediately on page load</li>
+              <li>Banner has z-index: 9999 - blocks clicks on elements behind it</li>
+              <li>Must wait for banner to appear before dismissing</li>
+              <li>Consider adding banner dismissal to test setup/hooks</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ADVANCED SCENARIOS -->
+    <section id="advanced" class="scenario-section">
+      <h2>Advanced Scenarios</h2>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 7: Complete Task Workflow</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@e2e @workflow @regression</span>
+<span class="keyword">Feature:</span> Complete Task Lifecycle
+
+  <span class="keyword">Background:</span>
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+
+  <span class="keyword">Scenario:</span> Create and move task through all columns
+    <span class="comment"># Step 1: Create new task</span>
+    <span class="keyword">When</span> I create a new task with title <span class="string">"E2E Test Task"</span> and priority <span class="string">"High"</span>
+    <span class="keyword">Then</span> the task should appear in the To Do column
+    <span class="keyword">And</span> the To Do column count should increase
+
+    <span class="comment"># Step 2: Move to In Progress</span>
+    <span class="keyword">When</span> I move task <span class="string">"E2E Test Task"</span> forward
+    <span class="keyword">Then</span> the task should be in the In Progress column
+    <span class="keyword">And</span> the To Do count should decrease
+    <span class="keyword">And</span> the In Progress count should increase
+
+    <span class="comment"># Step 3: Move to Done</span>
+    <span class="keyword">When</span> I move task <span class="string">"E2E Test Task"</span> forward
+    <span class="keyword">Then</span> the task should be in the Done column
+
+    <span class="comment"># Step 4: Verify and delete</span>
+    <span class="keyword">When</span> I search for <span class="string">"E2E Test"</span>
+    <span class="keyword">Then</span> the task should appear in search results
+    <span class="keyword">When</span> I delete the task
+    <span class="keyword">Then</span> the task should no longer exist on the board
+    <span class="keyword">And</span> searching for <span class="string">"E2E Test"</span> should return no results
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Multiple stale element situations - task ID changes on each move</li>
+              <li>Must re-locate task after each move operation</li>
+              <li>Track column counts across multiple operations</li>
+              <li>Handle multiple loading overlays sequentially</li>
+              <li>Verify both positive and negative states (exists / doesn't exist)</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 8: Loading State Handling</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@loading @synchronization</span>
+<span class="keyword">Feature:</span> Loading State Management
+
+  <span class="keyword">Scenario:</span> Initial page load with loading overlay
+    <span class="keyword">When</span> I navigate to the Task Board page
+    <span class="keyword">Then</span> a loading overlay should be visible
+    <span class="keyword">And</span> no tasks should be visible yet
+    <span class="keyword">When</span> the loading overlay disappears
+    <span class="keyword">Then</span> all pre-existing tasks should be visible
+    <span class="keyword">And</span> the board should have tasks in multiple columns
+
+  <span class="keyword">Scenario:</span> Cannot interact during loading
+    <span class="keyword">Given</span> I am creating a new task
+    <span class="keyword">When</span> the loading overlay is visible
+    <span class="keyword">Then</span> I should not be able to click on task cards
+    <span class="keyword">And</span> I should not be able to submit another task
+    <span class="keyword">When</span> the loading overlay disappears
+    <span class="keyword">Then</span> all interactions should be possible again
+
+  <span class="keyword">Scenario:</span> Handle random loading delays
+    <span class="keyword">Given</span> I perform multiple task operations
+    <span class="keyword">Then</span> each operation should complete regardless of delay duration
+    <span class="keyword">And</span> my tests should not use hard-coded sleep values
+    <span class="comment"># Tests should use explicit waits for loading overlay to disappear</span>
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Loading overlay has random duration - hard-coded waits will fail</li>
+              <li>Must implement explicit wait for loading overlay to disappear</li>
+              <li>Initial load: 500-800ms, Create: 800-1200ms, Move: 400-700ms, Delete: 300-500ms</li>
+              <li>Loading overlay has z-index: 5000 - blocks all clicks</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 9: Toast Notification Verification</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@toast @timing</span>
+<span class="keyword">Feature:</span> Toast Notifications
+
+  <span class="keyword">Scenario:</span> Verify toast appears and auto-dismisses
+    <span class="keyword">When</span> I create a new task
+    <span class="keyword">Then</span> a success toast should appear within 2 seconds
+    <span class="keyword">And</span> the toast should contain message <span class="string">"Task created successfully"</span>
+    <span class="keyword">And</span> the toast should have a close button
+    <span class="keyword">When</span> I wait 3 seconds without dismissing
+    <span class="keyword">Then</span> the toast should automatically disappear
+
+  <span class="keyword">Scenario:</span> Multiple toasts stack correctly
+    <span class="keyword">When</span> I quickly create two tasks in succession
+    <span class="keyword">Then</span> two toast notifications should be visible
+    <span class="keyword">And</span> they should be stacked vertically
+    <span class="keyword">And</span> each should dismiss after 3 seconds
+
+  <span class="keyword">Scenario:</span> Manually dismiss toast
+    <span class="keyword">When</span> I perform an action that shows a toast
+    <span class="keyword">And</span> I click the close button on the toast
+    <span class="keyword">Then</span> the toast should immediately disappear
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Toast exists for only 3 seconds - must capture quickly</li>
+              <li>Toast animates in/out - may need to wait for animation</li>
+              <li>Multiple toasts can exist simultaneously</li>
+              <li>Consider using explicit wait with custom condition for toast text</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="scenario">
+        <div class="scenario-header">
+          <h3>Scenario 10: Data-Driven Task Creation</h3>
+          <span class="difficulty hard">Hard</span>
+        </div>
+        <div class="scenario-body">
+          <div class="gherkin">
+<span class="tag">@data-driven @parameterized</span>
+<span class="keyword">Feature:</span> Data-Driven Tests
+
+  <span class="keyword">Scenario Outline:</span> Create tasks with different priorities
+    <span class="keyword">Given</span> the Task Board page is loaded
+    <span class="keyword">And</span> the cookie consent banner is dismissed
+    <span class="keyword">When</span> I create a task with title <span class="string">"&lt;title&gt;"</span> and priority <span class="string">"&lt;priority&gt;"</span>
+    <span class="keyword">Then</span> the task should appear in the To Do column
+    <span class="keyword">And</span> the task should display the <span class="string">"&lt;priority&gt;"</span> priority badge
+    <span class="keyword">And</span> the task card should have the <span class="string">"&lt;css_class&gt;"</span> border style
+
+    <span class="keyword">Examples:</span>
+      | title              | priority | css_class       |
+      | Low priority task  | Low      | priority-low    |
+      | Medium task        | Medium   | priority-medium |
+      | Urgent task        | High     | priority-high   |
+
+  <span class="keyword">Scenario Outline:</span> Search with various queries
+    <span class="keyword">When</span> I search for <span class="string">"&lt;query&gt;"</span>
+    <span class="keyword">Then</span> I should see <span class="string">"&lt;expected_count&gt;"</span> results
+
+    <span class="keyword">Examples:</span>
+      | query          | expected_count |
+      | project        | 1              |
+      | database       | 1              |
+      | implementation | 0              |
+          </div>
+
+          <div class="automation-hints">
+            <h4>Automation Challenges:</h4>
+            <ul>
+              <li>Implement proper test data management</li>
+              <li>Clean up created tasks after each test iteration</li>
+              <li>Verify CSS classes dynamically based on priority</li>
+              <li>Handle test isolation - each iteration should be independent</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- LOCATORS REFERENCE -->
+    <section id="locators" class="scenario-section">
+      <h2>Element Locators Reference</h2>
+
+      <div class="locators">
+        <h4>Form Elements</h4>
+        <table class="locator-table">
+          <tr>
+            <th>Element</th>
+            <th>Locator</th>
+            <th>Type</th>
+          </tr>
+          <tr>
+            <td>Task Title Input</td>
+            <td><code>#task-title</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Task Description</td>
+            <td><code>#task-description</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Priority Select</td>
+            <td><code>#priority-select</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Submit Button</td>
+            <td><code>#submit-task</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Task Form</td>
+            <td><code>#task-form</code></td>
+            <td>ID</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="locators" style="margin-top: 20px;">
+        <h4>Board Elements</h4>
+        <table class="locator-table">
+          <tr>
+            <th>Element</th>
+            <th>Locator</th>
+            <th>Type</th>
+          </tr>
+          <tr>
+            <td>To Do Column</td>
+            <td><code>#todo-column</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>In Progress Column</td>
+            <td><code>#inprogress-column</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Done Column</td>
+            <td><code>#done-column</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>To Do Task List</td>
+            <td><code>#todo-list</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>In Progress Task List</td>
+            <td><code>#inprogress-list</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Done Task List</td>
+            <td><code>#done-list</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Task Card</td>
+            <td><code>.task-card[data-task-id="..."]</code></td>
+            <td>CSS</td>
+          </tr>
+          <tr>
+            <td>Task Title</td>
+            <td><code>.task-title</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Menu Button</td>
+            <td><code>.btn-menu</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Move Forward Button</td>
+            <td><code>.move-btn</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Delete Button</td>
+            <td><code>.delete-btn</code></td>
+            <td>CSS Class</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="locators" style="margin-top: 20px;">
+        <h4>Header & Search</h4>
+        <table class="locator-table">
+          <tr>
+            <th>Element</th>
+            <th>Locator</th>
+            <th>Type</th>
+          </tr>
+          <tr>
+            <td>Search Input</td>
+            <td><code>#search-input</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Search Results</td>
+            <td><code>.search-results</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Search Result Item</td>
+            <td><code>.search-result-item</code></td>
+            <td>CSS Class</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="locators" style="margin-top: 20px;">
+        <h4>Overlays & Notifications</h4>
+        <table class="locator-table">
+          <tr>
+            <th>Element</th>
+            <th>Locator</th>
+            <th>Type</th>
+          </tr>
+          <tr>
+            <td>Cookie Banner</td>
+            <td><code>.cookie-banner</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Cookie Accept Button</td>
+            <td><code>#cookie-accept</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Cookie Decline Button</td>
+            <td><code>#cookie-decline</code></td>
+            <td>ID</td>
+          </tr>
+          <tr>
+            <td>Loading Overlay</td>
+            <td><code>.loading-overlay</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Toast Container</td>
+            <td><code>.toast-container</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Toast Message</td>
+            <td><code>.toast-message</code></td>
+            <td>CSS Class</td>
+          </tr>
+          <tr>
+            <td>Toast Close Button</td>
+            <td><code>.toast-close</code></td>
+            <td>CSS Class</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Task Board - QA Automation Assessment Application</p>
+    <p style="margin-top: 10px; opacity: 0.7;">
+      <a href="./">Open Task Board App</a> |
+      <a href="https://github.com/dbaloyverse/qa-authomation-assignment">GitHub Repository</a>
+    </p>
+  </footer>
+</body>
+</html>
